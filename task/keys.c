@@ -105,7 +105,7 @@ static void MAIN_KeyHandler(KEY_t Key)
 		if (gVfoMode < VFO_MODE_FM_SCROLL_UP) {
 			if (gVfoMode == VFO_MODE_FM) {
 				FM_AppendDigit(Key);
-			} else if (gSettings.WorkMode) {
+			} else if (gSettings.WorkMode && !gFrequencyReverse) {
 				CHANNEL_AppendDigit(Key);
 			} else {
 				VFO_AppendDigit(Key);
@@ -127,7 +127,7 @@ static void MAIN_KeyHandler(KEY_t Key)
 			if (gVfoMode == VFO_MODE_FM) {
 				FM_UpdateFrequency();
 				UI_DrawFMFrequency(gSettings.FmFrequency);
-			} else if (gSettings.WorkMode) {
+			} else if (gSettings.WorkMode && !gFrequencyReverse) {
 				CHANNELS_UpdateChannel();
 			} else {
 				CHANNELS_UpdateVFO();
@@ -493,9 +493,6 @@ static void HandlerLong(KEY_t Key)
 				break;
 
 			case KEY_STAR:
-				if (gSettings.WorkMode) {
-					return;
-				}
 				gFrequencyReverse = !gFrequencyReverse;
 				bBeep740 = gFrequencyReverse;
 				UI_DrawVfo(gSettings.CurrentVfo);
